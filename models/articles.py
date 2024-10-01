@@ -9,6 +9,7 @@ class Articles(db.Model):
   body = db.Column(db.Text(), nullable=False)
   viewed = db.Column(db.Integer, default=0)
   created_at = db.Column(db.TIMESTAMP)
+  thumbnail_url = db.Column(db.Text(), nullable=False)
   writer_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
   def __repr__(self):

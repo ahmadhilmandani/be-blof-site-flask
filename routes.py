@@ -5,7 +5,7 @@ from functools import wraps
 
 from controller.admin_controller import verif_writer
 from controller.admin_user_controller import profile_update, login, add_writer
-from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article
+from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article, most_read_article
 
 
 def register_app(app):
@@ -82,7 +82,6 @@ def register_app(app):
 
   #endpoint: add-viewed-article
   @app.route('/add-viewed/article/<int:id>', methods=['PUT'])
-  @jwt_required()
   def route_add_viewed_of_article(id):
      return add_viewed_of_article(id)
   
@@ -92,3 +91,9 @@ def register_app(app):
   @jwt_required()
   def route_delete_article(id):
      return delete_article(id)
+  
+
+  #endpoint: delete-article
+  @app.route('/most-read-article')
+  def route_most_read_article():
+     return most_read_article()

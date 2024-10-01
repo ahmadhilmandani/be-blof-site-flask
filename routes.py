@@ -5,7 +5,7 @@ from functools import wraps
 
 from controller.admin_controller import verif_writer
 from controller.admin_user_controller import profile_update, login, add_writer, register_user
-from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article, most_read_article
+from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article, most_read_article, get_article_by_user_id
 
 
 def register_app(app):
@@ -74,6 +74,13 @@ def register_app(app):
   @app.route('/get-article/<int:id>')
   def route_get_article_by_id(id):
      return get_article_by_id(id)
+  
+
+  #endpoint: get-article-by-user-id
+  @app.route('/get-article-by-user')
+  @jwt_required()
+  def route_get_article_by_user_id():
+     return get_article_by_user_id()
   
 
 

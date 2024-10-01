@@ -73,6 +73,25 @@ def get_article_by_id(id):
   }), 200
 
 
+#logic: get article by id
+def get_article_by_user_id():
+  user = get_jwt_identity()
+  articles = Articles.query.filter_by(writer_id=user['id']).all()
+  # return f'{articles}'
+  return jsonify({
+                  'data': [{ 
+                  'id': article.id,
+                  'title': article.title, 
+                  'sub_title': article.sub_title, 
+                  'body': article.body, 
+                  'viewed': article.viewed, 
+                  'created_at': article.created_at, 
+                  'thumbnail_url': article.thumbnail_url, 
+                  'writer': article.user.name 
+                  } for article in articles]
+                }), 200
+
+
 #logic: get most read
 def most_read_article():
   articles =  Articles.query.order_by(desc(Articles.viewed)).paginate(page=1, per_page=5)

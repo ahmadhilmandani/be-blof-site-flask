@@ -4,7 +4,7 @@ from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from functools import wraps
 
 from controller.admin_controller import verif_writer
-from controller.admin_user_controller import profile_update, login, add_writer
+from controller.admin_user_controller import profile_update, login, add_writer, register_user
 from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article, most_read_article
 
 
@@ -25,6 +25,11 @@ def register_app(app):
   
   
   # endpoint: add writer
+  @app.route('/register-user', methods=['POST'])
+  def router_register_user():
+     return register_user()
+  
+
   @app.route('/add-writer', methods=['POST'])
   def router_add_writer():
      return add_writer()

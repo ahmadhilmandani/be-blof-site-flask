@@ -30,7 +30,7 @@ def create_article():
   im = pyimgur.Imgur('9e1bf0fda6cb5ad')
 
   try:
-    uploaded_image = im.upload_image(filepath, title="test")
+    uploaded_image = im.upload_image(filepath, title=filename)
     os.remove(filepath)
   except Exception as e:
     return jsonify({"error": str(e)}), 500
@@ -51,6 +51,7 @@ def get_all_article():
                   'sub_title': article.sub_title, 
                   'body': article.body, 
                   'viewed': article.viewed, 
+                  'thumbnail_url': article.thumbnail_url, 
                   'created_at': article.created_at, 
                   'writer': article.user.name 
                   } for article in articles.items]
@@ -66,6 +67,7 @@ def get_article_by_id(id):
     'sub_title': article.sub_title,
     'body': article.body,
     'viewed': article.viewed,
+    'thumbnail_url': article.thumbnail_url, 
     'created_at': article.created_at,
     'writer': article.user.name
   }), 200

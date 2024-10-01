@@ -3,7 +3,7 @@ from models.users import User
 from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from functools import wraps
 
-from controller.admin_controller import verif_writer
+from controller.admin_controller import verif_writer, get_all_user, get_writer_need_verif
 from controller.admin_user_controller import profile_update, login, add_writer, register_user
 from controller.article_controller import create_article, get_all_article, get_article_by_id, update_article, add_viewed_of_article, delete_article, most_read_article, get_article_by_user_id
 
@@ -55,6 +55,21 @@ def register_app(app):
   # @admin_required
   def route_verif_writer(id):
      return verif_writer(id)
+  
+
+
+  # endpoint: get need verif writer
+  @app.route('/get-all-user')
+  @admin_required
+  def route_get_all_user():
+     return get_all_user()
+  
+
+  # endpoint: get need verif writer
+  @app.route('/get-writer-need-verif')
+  @admin_required
+  def route_get_writer_need_verif():
+     return get_writer_need_verif()
   
 
   # endpoint: create-article

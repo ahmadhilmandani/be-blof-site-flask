@@ -19,27 +19,25 @@ def verif_writer(id):
 
 # logic: get user
 def get_all_user():
-  users = User.query.filter_by('role'!='admin').all()
+  users = User.query.filter(User.role!='admin').all()
   return jsonify({
                   'data': [{ 
                   'id': user.id,
                   'name': user.name, 
                   'role': user.role, 
                   'is_verif': user.is_verif, 
-                  'writer': user.user.name 
                   } for user in users]
                 }), 200
 
 
 # logic: get user need a verification
 def get_writer_need_verif():
-   users = User.query.filter_by('role'!='writer'&'is_verif'==0).all()
+   users = User.query.filter(User.role=='writer',User.is_verif==0).all()
    return jsonify({
                   'data': [{ 
                   'id': user.id,
                   'name': user.name, 
                   'role': user.role, 
                   'is_verif': user.is_verif, 
-                  'writer': user.user.name 
                   } for user in users]
                 }), 200

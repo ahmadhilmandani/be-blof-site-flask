@@ -30,9 +30,9 @@ def register_app(app):
      return register_user()
   
 
-  @app.route('/add-writer', methods=['POST'])
-  def router_add_writer():
-     return add_writer()
+  @app.route('/add-writer/<int:id>', methods=['POST'])
+  def router_add_writer(id):
+     return add_writer(id)
   
 
   # endpoint: login
@@ -53,21 +53,24 @@ def register_app(app):
   # endpoint: verif writer
   @app.route('/verif-writer/<int:id>', methods=['POST'])
   # @admin_required
+  @jwt_required()
   def route_verif_writer(id):
      return verif_writer(id)
   
 
 
-  # endpoint: get need verif writer
+  # endpoint: get all user
   @app.route('/get-all-user')
-  @admin_required
+#   @admin_required
+  @jwt_required()
   def route_get_all_user():
      return get_all_user()
   
 
   # endpoint: get need verif writer
   @app.route('/get-writer-need-verif')
-  @admin_required
+#   @admin_required
+  @jwt_required()
   def route_get_writer_need_verif():
      return get_writer_need_verif()
   

@@ -73,7 +73,7 @@ def get_article_by_id(id):
   }), 200
 
 
-#logic: get article by id
+#logic: get article by user id
 def get_article_by_user_id():
   user = get_jwt_identity()
   articles = Articles.query.filter_by(writer_id=user['id']).all()
@@ -111,13 +111,31 @@ def update_article(id):
   article = Articles.query.filter_by(id=id).first()
   user = get_jwt_identity()
 
-  if user['id'] != article.writer_id:
+  if (user['id'] != article.writer_id and user['role'] == 'writer' ) and user['role'] != 'admin':
     return jsonify(msg="Unauth"), 401
   
-  data = request.get_json()
-  article.title = data.get('title')
-  article.sub_title = data.get('sub_title')
-  article.body = data.get('body')
+  article.title = request.form.get('title')
+  article.sub_title = request.form.get('sub_title')
+  article.body = request.form.get('body')
+
+  if 'image' in request.files:    
+    image = request.files['image']
+
+    UPLOAD_FOLDER = 'uploads'
+    os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+    filename = secure_filename(image.filename)
+    filepath = os.path.join(UPLOAD_FOLDER, filename)
+    image.save(filepath)
+
+    im = pyimgur.Imgur('9e1bf0fda6cb5ad')
+
+    try:
+      uploaded_image = im.upload_image(filepath, title=filename)
+      os.remove(filepath)
+      article.thumbnail_url = uploaded_image.link
+    except Exception as e:
+      return jsonify({"error": str(e)}), 500
+    
 
   db.session.commit()
   
@@ -127,7 +145,8 @@ def update_article(id):
     'body': article.body,
     'viewed': article.viewed,
     'created_at': article.created_at,
-    'writer': article.user.name
+    'writer': article.user.name,
+    'thumbnail_url': article.thumbnail_url,
   }), 200
 
 

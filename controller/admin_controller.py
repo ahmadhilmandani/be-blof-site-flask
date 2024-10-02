@@ -2,7 +2,7 @@ from app import db
 from models.users import User
 from flask import jsonify, request
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
 
 # logic for verif writer
 def verif_writer(id):
@@ -28,6 +28,16 @@ def get_all_user():
                   'is_verif': user.is_verif, 
                   } for user in users]
                 }), 200
+
+
+def user_logged_in_data():
+  user = get_jwt_identity()
+  return jsonify({
+    'id': user['id'],
+    'name': user['name'], 
+    'role': user['role'], 
+    'is_verif': user['is_verif'], 
+  }), 200
 
 
 # logic: get user need a verification

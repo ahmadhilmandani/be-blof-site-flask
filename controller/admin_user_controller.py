@@ -2,7 +2,7 @@ from app import db
 from models.users import User
 from flask import jsonify, request
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, get_jwt_identity
 
 bcrypt = Bcrypt()
 
@@ -33,9 +33,12 @@ def add_writer(id):
   get_user.role = 'writer'
 
   db.session.commit()
+  token = create_access_token(identity={'id': get_user.id, 'name': get_user.name, 'email': get_user.email, 'is_verif': get_user.is_verif, 'role': get_user.role})
+
 
   return jsonify({
       'message': 'Writer Added',
+      'token': token
       }), 200
 
 

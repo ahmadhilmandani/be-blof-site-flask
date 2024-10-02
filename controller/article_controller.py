@@ -156,7 +156,7 @@ def delete_article(id):
   user = get_jwt_identity()
   article = Articles.query.get_or_404(id)
   
-  if user['id'] != article.writer_id or user['role'] == 'admin':
+  if (user['id'] != article.writer_id and user['role'] == 'writer' ) and user['role'] != 'admin':
     return jsonify(msg="Unauth"), 401
   
   db.session.delete(article)
